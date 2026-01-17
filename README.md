@@ -13,10 +13,37 @@ Aesth (pronounced like "aesthetic") helps you build interfaces with craft and co
 
 ## Installation
 
+### From Marketplace (Recommended)
+
+```bash
+# Add the zircote marketplace (if not already added)
+claude /plugin marketplace add zircote/marketplace
+
+# Install aesth
+claude /plugin install aesth@zircote
+```
+
+### From GitHub Directly
+
+```bash
+claude /plugin install zircote/aesth
+```
+
+### Manual Installation
+
 1. Clone or symlink this directory to your Claude Code plugins location
-2. Ensure Subcog MCP is available and configured
-3. Restart Claude Code
-4. Run `/aesth:init` to initialize
+2. Restart Claude Code
+
+### Prerequisites
+
+- Claude Code with plugin support
+- Subcog MCP server configured and running
+
+### Verify Installation
+
+```
+/aesth:init
+```
 
 ## Commands
 
