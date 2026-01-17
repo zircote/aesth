@@ -1,0 +1,25 @@
+{
+  "description": "Aesth: Post-write validation against design principles using Subcog memory",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "file://${CLAUDE_PLUGIN_ROOT}/hooks/validate-design.md"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "file://${CLAUDE_PLUGIN_ROOT}/hooks/validate-design.md"
+          }
+        ]
+      }
+    ]
+  }
+}

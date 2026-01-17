@@ -1,0 +1,89 @@
+---
+name: validate-design
+description: Non-blocking post-tool hook to report design system violations
+---
+
+# Design Validation Hook (Non-Blocking)
+
+A file was just written or edited. If it's a UI file, check it against the design system stored in Subcog and **report findings without blocking workflow**.
+
+**IMPORTANT**: This hook is advisory only. Report violations but do NOT stop work or require fixes before proceeding.
+
+## File Information
+
+The file that was just modified is available in `tool_input.file_path`.
+
+## Quick Check Process
+
+### Step 1: Check if UI File
+
+Only validate files with these extensions:
+- `.tsx`, `.jsx` (React components)
+- `.vue`, `.svelte` (Vue/Svelte components)
+- `.css`, `.scss` (Stylesheets)
+- `.styled.ts`, `.styled.tsx` (Styled components)
+
+If not a UI file, **exit silently** - output nothing.
+
+### Step 2: Quick Subcog Check
+
+Query for project design system (fast, single query):
+
+```text
+subcog_recall(filter: "ns:patterns tag:aesth domain:project", limit: 5)
+```
+
+If no memories found, **exit silently** - no design system means nothing to validate against.
+
+### Step 3: Fast Validation
+
+Only check the most impactful violations:
+
+**Spacing Grid (if tokens defined):**
+- Look for obvious off-grid values like 5px, 7px, 14px, 17px, 22px
+- Only flag values that are clearly wrong (not near any grid value)
+
+**Depth Strategy Conflicts (if direction defined):**
+- If `borders-only`: flag obvious `box-shadow` usage
+- Skip ring shadows (`0 0 0`) and focus shadows
+
+### Step 4: Report (Advisory Only)
+
+**If violations found, output a brief note:**
+
+```text
+Design note: Found [count] potential inconsistencies in [filename]
+- [brief violation description]
+Run /aesth:validate for details.
+```
+
+**If no obvious violations or no design system:**
+
+Output nothing. Silent pass.
+
+## Critical Rules
+
+1. **NEVER block workflow** - this is informational only
+2. **NEVER require fixes** - just note and move on
+3. **Keep it brief** - max 3-4 lines of output
+4. **Fail silent** - if anything goes wrong, output nothing
+5. **Fast exit** - if not a UI file or no system, exit immediately
+6. **No follow-up actions** - don't offer to fix, don't ask questions
+
+## Example Output
+
+Good (brief, advisory):
+```text
+Design note: 2 potential spacing issues in Button.tsx
+Run /aesth:validate for details.
+```
+
+Bad (too verbose, blocking):
+```text
+=== DESIGN VALIDATION ===
+Found 5 violations...
+[long list]
+Fix these issues before proceeding.
+```
+
+The goal is awareness, not enforcement. Let the developer decide when to address issues.

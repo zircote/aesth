@@ -1,0 +1,13 @@
+{
+  "name": "aesth",
+  "description": "Craft-focused design system management powered by Subcog memory. Build interfaces with elegance, consistency, and semantic memory.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Robert Allen",
+    "url": "https://github.com/zircote"
+  },
+  "homepage": "https://github.com/zircote/aesth",
+  "repository": "https://github.com/zircote/aesth",
+  "commands": "./.claude/commands",
+  "skills": "./.claude/skills"
+}
