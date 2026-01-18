@@ -19,9 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Validation hook disabled (conflicted with Subcog PostToolUse hooks)
 - Use `/aesth:validate` command for manual validation instead
 
-### Planned
-- Add design token export functionality
-- Component library generation support
+<!-- Future work tracked in GitHub Issues -->
+<!-- - Design token export functionality -->
+<!-- - Component library generation support -->
 
 ## [0.1.0] - 2026-01-17
 

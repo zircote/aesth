@@ -10,12 +10,40 @@ Guidelines for contributing to the aesth plugin.
 - Subcog MCP server configured and running
 - Basic understanding of Claude Code plugin architecture
 
+### Subcog Setup (Required)
+
+Before developing, ensure Subcog MCP is properly configured:
+
+1. Install Subcog MCP server:
+   ```bash
+   # Follow instructions at https://github.com/zircote/subcog
+   ```
+
+2. Configure Subcog in your Claude Code settings (`.mcp.json`):
+   ```json
+   {
+     "mcpServers": {
+       "subcog": {
+         "command": "subcog",
+         "args": ["serve"]
+       }
+     }
+   }
+   ```
+
+3. Verify Subcog is running:
+   ```
+   /subcog:status
+   ```
+
+Without Subcog, aesth commands will fail as it has no file-based fallback.
+
 ### Setup
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/zircote/design.git
-   cd design/aesth
+   git clone https://github.com/zircote/aesth.git
+   cd aesth
    ```
 
 2. Symlink or copy to your Claude Code plugins directory
@@ -40,12 +68,15 @@ aesth/
 │   │   ├── validate.md
 │   │   ├── capture.md
 │   │   └── extract.md
-│   └── skills/
-│       └── aesth/
-│           ├── SKILL.md     # Main skill definition
-│           └── references/
-│               └── principles.md
+│   ├── skills/
+│   │   └── aesth/
+│   │       ├── SKILL.md     # Main skill definition
+│   │       └── references/
+│   │           └── principles.md
+│   └── hooks/               # Event hooks (disabled by default)
+│       └── *.bak            # Preserved hook templates
 ├── README.md
+├── CLAUDE.md                # Development guidelines
 ├── CONTRIBUTING.md
 ├── ARCHITECTURE.md
 └── CHANGELOG.md

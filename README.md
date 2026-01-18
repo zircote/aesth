@@ -177,6 +177,25 @@ Aesth is inspired by [claude-design-engineer](https://github.com/Dammyjay93/clau
 - Claude Code with plugin support
 - Subcog MCP server configured and running
 
+## Troubleshooting
+
+**"No design system found" after init**
+- This is normal for new projects. Start building UI and aesth will suggest a direction.
+- For existing projects, run `/aesth:extract src/components` to pull patterns from code.
+
+**Commands fail or timeout**
+- Verify Subcog MCP server is running: `/subcog:status`
+- Check your `.mcp.json` configuration includes the subcog server
+- Aesth has no file-based fallback — Subcog is required
+
+**Validation reports no rules**
+- Run `/aesth:init` first to load design system
+- If no system exists, establish one by building UI or running `/aesth:extract`
+
+**Patterns not persisting between sessions**
+- Confirm you saved patterns when prompted ("Want me to save these patterns to Subcog?")
+- Check Subcog memory with `/subcog:status` to verify memories exist
+
 ## License
 
 MIT

@@ -17,6 +17,7 @@ Aesth is a Claude Code plugin for craft-focused design system management, powere
     aesth/
       SKILL.md         # Main skill definition
       references/      # Quick-reference documentation
+  hooks/               # Event hooks (disabled by default, .bak files)
 ```
 
 ## Key Concepts
