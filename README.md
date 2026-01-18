@@ -1,5 +1,10 @@
 # Aesth - Craft-Focused Design System Plugin
 
+[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/zircote/aesth/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-Plugin-purple.svg)](https://github.com/anthropics/claude-code)
+[![Requires Subcog](https://img.shields.io/badge/Requires-Subcog-orange.svg)](https://github.com/zircote/subcog)
+
 Claude Code plugin for design system management powered by Subcog memory.
 
 ## Overview
