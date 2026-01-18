@@ -177,12 +177,15 @@ Date: [ISO 8601 date]
 
 After successful capture:
 ```text
-Captured to Subcog: [Type]
-URN: subcog://project/patterns/{urn}
-Tags: aesth, [type-specific-tags]
+Captured to Subcog: Design Direction
+URN: subcog://project/patterns/aesth-direction-a1b2c3d4
+Tags: aesth, design-direction, precision-density, borders-only
 
 Content preview:
-  [First 3-5 lines of captured content]
+  ## Design Direction
+  Personality: Precision & Density
+  Foundation: Cool Slate
+  ...
 ```
 
 ## Interactive Mode

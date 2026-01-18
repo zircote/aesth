@@ -25,8 +25,8 @@ Initialize aesth skill and load design system from Subcog.
 ```text
 Aesth initialized.
 
-Design Direction: [Personality] / [Foundation] / [Depth]
-Source: subcog://project/patterns/{urn}
+Design Direction: Precision & Density / Cool Slate / Borders-only
+Source: subcog://project/patterns/aesth-direction-a1b2c3d4
 
 Ready to build with established patterns.
 Use /aesth:status to see full system.
