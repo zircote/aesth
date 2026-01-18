@@ -1,6 +1,7 @@
 ---
 name: aesth:extract
 description: Extract design patterns from existing codebase and capture to Subcog memory.
+allowed-tools: mcp__plugin_subcog_subcog__subcog_capture, mcp__plugin_subcog_subcog__subcog_recall, Read, Glob, Grep
 ---
 
 # aesth extract

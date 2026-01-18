@@ -1,6 +1,7 @@
 ---
 name: aesth:capture
 description: Capture design patterns, tokens, or decisions to Subcog memory.
+allowed-tools: mcp__plugin_subcog_subcog__subcog_capture, mcp__plugin_subcog_subcog__subcog_recall
 ---
 
 # aesth capture

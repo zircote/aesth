@@ -1,6 +1,7 @@
 ---
 name: aesth:status
 description: Show current design system state from Subcog including direction, tokens, patterns, and decisions.
+allowed-tools: mcp__plugin_subcog_subcog__subcog_recall
 ---
 
 # aesth status
