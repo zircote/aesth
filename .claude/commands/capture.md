@@ -1,7 +1,7 @@
 ---
 name: aesth:capture
 description: Capture design patterns, tokens, or decisions to Subcog memory.
-allowed-tools: mcp__plugin_subcog_subcog__subcog_capture, mcp__plugin_subcog_subcog__subcog_recall
+allowed-tools: mcp__plugin_subcog_subcog__subcog_capture, mcp__plugin_subcog_subcog__subcog_recall, Bash, Glob, Grep, Read, Write
 ---
 
 # aesth capture
@@ -204,3 +204,71 @@ Select (1-4):
 ```
 
 Then gather relevant information through conversation.
+
+---
+
+## Mnemonic Integration: Cross-Session Learning
+
+After capturing design patterns to Subcog, also capture significant decisions to mnemonic for cross-project learning.
+
+### When to Capture to Mnemonic
+
+Capture to mnemonic when the design decision represents:
+- A reusable design pattern applicable across projects
+- A lesson learned from design iteration
+- A craft principle discovered through practice
+
+### Capture Process
+
+After successful Subcog capture, if the content qualifies:
+
+```bash
+# Search for related existing memories first
+rg -i "design|pattern|aesth" ~/.claude/mnemonic/ --glob "*.memory.md" -l | head -5
+
+# If this is a novel insight, capture it
+UUID=$(uuidgen | tr '[:upper:]' '[:lower:]')
+DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+NAMESPACE="patterns"
+TITLE="Design Pattern: {pattern-name}"
+SLUG=$(echo "$TITLE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | head -c 50)
+
+cat > ~/.claude/mnemonic/default/${NAMESPACE}/user/${UUID}-${SLUG}.memory.md << 'MEMORY'
+---
+id: ${UUID}
+type: procedural
+namespace: patterns/user
+created: ${DATE}
+modified: ${DATE}
+title: "${TITLE}"
+tags:
+  - aesth
+  - design-pattern
+  - {specific-tags}
+temporal:
+  valid_from: ${DATE}
+  recorded_at: ${DATE}
+provenance:
+  source_type: design-capture
+  agent: claude-opus-4
+  confidence: 0.85
+---
+
+# {Pattern Title}
+
+## Level 1: Quick Answer
+{One-line summary of the pattern}
+
+## Level 2: Context
+{When and why to use this pattern}
+
+## Level 3: Full Detail
+{Complete pattern specification with rationale}
+MEMORY
+```
+
+### Do Not Capture to Mnemonic
+
+- Project-specific tokens (colors, spacing) - these stay in Subcog only
+- Routine component patterns without novel insight
+- Decisions that only apply to current project context

@@ -1,12 +1,26 @@
 ---
 name: aesth:status
 description: Show current design system state from Subcog including direction, tokens, patterns, and decisions.
-allowed-tools: mcp__plugin_subcog_subcog__subcog_recall
+allowed-tools: mcp__plugin_subcog_subcog__subcog_recall, Bash, Glob, Grep, Read
 ---
 
 # aesth status
 
 Display current design system from Subcog memory.
+
+## Pre-Status: Check Mnemonic for Related Memories
+
+Before displaying status, optionally check mnemonic for related design memories:
+
+```bash
+# Quick check for design-related memories
+rg -c "aesth|design" ~/.claude/mnemonic/ --glob "*.memory.md" 2>/dev/null | head -3
+```
+
+This provides context about:
+- Design decisions made in other projects that may inform current work
+- Patterns that have been successful across projects
+- User's evolving design preferences
 
 ## Implementation
 

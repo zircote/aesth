@@ -1,12 +1,30 @@
 ---
 name: aesth:init
 description: Initialize aesth skill with Subcog context. Loads design system for current project.
-allowed-tools: mcp__plugin_subcog_subcog__subcog_recall, mcp__plugin_subcog_subcog__subcog_capture
+allowed-tools: mcp__plugin_subcog_subcog__subcog_recall, mcp__plugin_subcog_subcog__subcog_capture, Bash, Glob, Grep, Read
 ---
 
 # aesth init
 
 Initialize aesth skill and load design system from Subcog.
+
+## Pre-Init: Recall User Preferences from Mnemonic
+
+Before initializing, check mnemonic for user's design preferences and prior decisions:
+
+```bash
+# Search for design-related user preferences
+rg -i "design|aesth|ui|interface|pattern" ~/.claude/mnemonic/ --glob "*.memory.md" -l | head -10
+
+# Check decisions namespace for design decisions
+rg -l "." ~/.claude/mnemonic/*/decisions/ --glob "*.memory.md" 2>/dev/null | head -5
+```
+
+Apply recalled preferences:
+- User's preferred design personality (Precision, Warmth, etc.)
+- Common depth strategy choices
+- Spacing preferences across projects
+- Color palette preferences
 
 ## Process
 

@@ -7,6 +7,23 @@ description: Interface design with craft and consistency. For dashboards, apps, 
 
 Build interface design with elegance, consistency, and memory.
 
+## Mnemonic Integration
+
+Before starting any design work, recall relevant memories:
+
+```bash
+# Search for design-related memories
+rg -i "design|aesth|ui|pattern|spacing|color" ~/.claude/mnemonic/ --glob "*.memory.md" -l | head -10
+
+# Check decisions namespace
+rg -l "." ~/.claude/mnemonic/*/decisions/ --glob "*.memory.md" 2>/dev/null | xargs -I {} basename {} 2>/dev/null | head -5
+```
+
+Apply recalled context:
+- User's preferred design personality across projects
+- Patterns that have been successful
+- Decisions about depth, spacing, and color strategies
+
 ## Scope
 
 **Use for:** Dashboards, admin panels, SaaS apps, tools, settings pages, data interfaces.
@@ -142,6 +159,54 @@ If yes, use `subcog_capture` to store:
 Tags should include: `["aesth", "{memory-type}"]`
 
 This compounds — each save makes future work faster and more consistent.
+
+### Also Capture to Mnemonic
+
+For design decisions that represent cross-project learnings:
+
+```bash
+# Check if insight already exists
+rg -i "{decision-topic}" ~/.claude/mnemonic/ --glob "*.memory.md"
+
+# If novel, capture to mnemonic
+UUID=$(uuidgen | tr '[:upper:]' '[:lower:]')
+DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+TITLE="Design Decision: {topic}"
+SLUG=$(echo "$TITLE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | head -c 50)
+
+cat > ~/.claude/mnemonic/default/decisions/user/${UUID}-${SLUG}.memory.md << 'MEMORY'
+---
+id: ${UUID}
+type: semantic
+namespace: decisions/user
+created: ${DATE}
+modified: ${DATE}
+title: "${TITLE}"
+tags:
+  - aesth
+  - design-decision
+  - {specific-tags}
+temporal:
+  valid_from: ${DATE}
+  recorded_at: ${DATE}
+provenance:
+  source_type: design-session
+  agent: claude-opus-4
+  confidence: 0.85
+---
+
+# {Decision Title}
+
+## Decision
+{What was decided}
+
+## Rationale
+{Why this decision was made}
+
+## Impact
+{How this affects future design work}
+MEMORY
+```
 
 ---
 
