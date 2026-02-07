@@ -1,17 +1,26 @@
 ---
-name: validate
+name: aesth:validate
 description: Validate code files against design tokens, craft principles, and design direction stored in Subcog.
 allowed-tools: mcp__plugin_subcog_subcog__subcog_recall, Read, Glob, Bash, Grep, Write
 ---
 
-## Memory
-
-Search first: `rg -i "validation design" ~/.claude/mnemonic/ ./.claude/mnemonic/ --glob "*.memory.md"`
-Capture after: `/mnemonic:capture learnings "{title}"`
-
 # aesth validate
 
 Check code for design consistency violations.
+
+## Pre-Validation: Recall Validation Learnings from Mnemonic
+
+Before validating, check mnemonic for prior validation insights:
+
+```bash
+# Search for validation-related memories
+rg -i "validation|violation|design-check" ~/.claude/mnemonic/ --glob "*.memory.md" -l | head -5
+```
+
+Apply recalled insights:
+- Common violation patterns to watch for
+- False positives to avoid flagging
+- Context-specific exceptions learned from prior validations
 
 ## Usage
 
@@ -112,3 +121,50 @@ Create a system first:
 2. Run /aesth:extract → create system from existing code
 ```
 
+---
+
+## Post-Validation: Capture Insights to Mnemonic
+
+If validation reveals novel insights or recurring patterns, capture to mnemonic:
+
+```bash
+# Check if similar insight exists
+rg -i "{violation-type}" ~/.claude/mnemonic/ --glob "*.memory.md"
+
+# Capture novel validation learnings
+UUID=$(uuidgen | tr '[:upper:]' '[:lower:]')
+DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+cat > ~/.claude/mnemonic/default/learnings/user/${UUID}-validation-insight.memory.md << 'MEMORY'
+---
+id: ${UUID}
+type: episodic
+namespace: learnings/user
+created: ${DATE}
+modified: ${DATE}
+title: "Validation Learning: {Issue Type}"
+tags:
+  - aesth
+  - validation
+  - design-consistency
+temporal:
+  valid_from: ${DATE}
+  recorded_at: ${DATE}
+provenance:
+  source_type: validation-session
+  agent: claude-opus-4
+  confidence: 0.8
+---
+
+# Validation Learning
+
+## Pattern Identified
+{Description of the common violation or insight}
+
+## Root Cause
+{Why this pattern occurs}
+
+## Prevention
+{How to avoid this in future work}
+MEMORY
+```
