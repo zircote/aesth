@@ -1,5 +1,5 @@
 ---
-name: aesth:validate
+name: validate
 description: Validate code files against design tokens, craft principles, and design direction stored in Subcog.
 allowed-tools: mcp__plugin_subcog_subcog__subcog_recall, Read, Glob, Bash, Grep, Write
 ---
