@@ -1,5 +1,5 @@
 ---
-name: init
+name: aesth:init
 description: Initialize aesth skill with Subcog context. Loads design system for current project.
 allowed-tools: mcp__plugin_subcog_subcog__subcog_recall, mcp__plugin_subcog_subcog__subcog_capture, Bash, Glob, Grep, Read
 ---
