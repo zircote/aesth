@@ -1,28 +1,17 @@
 ---
-name: aesth:extract
+name: extract
 description: Extract design patterns from existing codebase and capture to Subcog memory.
 allowed-tools: mcp__plugin_subcog_subcog__subcog_capture, mcp__plugin_subcog_subcog__subcog_recall, Read, Glob, Grep, Bash, Write
 ---
 
+## Memory
+
+Search first: `rg -i "extract design" ~/.claude/mnemonic/ ./.claude/mnemonic/ --glob "*.memory.md"`
+Capture after: `/mnemonic:capture learnings "{title}"`
+
 # aesth extract
 
 Scan existing code for design patterns and capture to Subcog.
-
-## Pre-Extraction: Recall from Mnemonic
-
-Before extracting patterns, check mnemonic for prior extraction learnings:
-
-```bash
-# Search for extraction-related memories
-rg -i "extract|design-pattern|spacing|color|typography" ~/.claude/mnemonic/ --glob "*.memory.md" -l | head -5
-
-# Read any relevant memories for guidance on extraction strategies
-```
-
-Apply any recalled learnings:
-- Extraction patterns that worked well previously
-- Common pitfalls to avoid
-- Color palette naming conventions used across projects
 
 ## Usage
 
@@ -154,54 +143,6 @@ If user confirms, capture:
 4. **Design Decisions** - Extraction summary as initial decision
 
 All tagged with: `["aesth", "extracted", "{memory-type}"]`
-
----
-
-## Post-Extraction: Capture Learnings to Mnemonic
-
-If the extraction reveals novel insights or patterns, capture to mnemonic:
-
-```bash
-# Check if this insight is already captured
-rg -i "{insight-keyword}" ~/.claude/mnemonic/ --glob "*.memory.md"
-
-# If novel, capture the learning
-UUID=$(uuidgen | tr '[:upper:]' '[:lower:]')
-DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-
-cat > ~/.claude/mnemonic/default/learnings/user/${UUID}-extraction-insight.memory.md << 'MEMORY'
----
-id: ${UUID}
-type: episodic
-namespace: learnings/user
-created: ${DATE}
-modified: ${DATE}
-title: "Design Extraction: {Project Context}"
-tags:
-  - aesth
-  - extraction
-  - design-pattern
-temporal:
-  valid_from: ${DATE}
-  recorded_at: ${DATE}
-provenance:
-  source_type: extraction-session
-  agent: claude-opus-4
-  confidence: 0.8
----
-
-# Extraction Learning
-
-## What Happened
-{Brief description of the extraction session}
-
-## Key Insight
-{The novel pattern or approach discovered}
-
-## Application
-{How this can be applied in future extractions}
-MEMORY
-```
 
 ## Customization
 

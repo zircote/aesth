@@ -1,5 +1,5 @@
 ---
-name: aesth:status
+name: status
 description: Show current design system state from Subcog including direction, tokens, patterns, and decisions.
 allowed-tools: mcp__plugin_subcog_subcog__subcog_recall, Bash, Glob, Grep, Read
 ---
@@ -14,7 +14,7 @@ Before displaying status, optionally check mnemonic for related design memories:
 
 ```bash
 # Quick check for design-related memories
-rg -c "aesth|design" ~/.claude/mnemonic/ --glob "*.memory.md" 2>/dev/null | head -3
+rg -c "aesth|design" ~/.claude/mnemonic/ ./.claude/mnemonic/ --glob "*.memory.md" 2>/dev/null | head -3
 ```
 
 This provides context about:
