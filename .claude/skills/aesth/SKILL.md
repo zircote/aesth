@@ -3,26 +3,14 @@ name: aesth
 description: Interface design with craft and consistency. For dashboards, apps, tools — not marketing sites. Uses Subcog for persistent design memory.
 ---
 
+## Memory
+
+Search first: `rg -i "design aesth" ~/.claude/mnemonic/ ./.claude/mnemonic/ --glob "*.memory.md"`
+Capture after: `/mnemonic:capture patterns "{title}"`
+
 # Aesth: Craft-Focused Design
 
 Build interface design with elegance, consistency, and memory.
-
-## Mnemonic Integration
-
-Before starting any design work, recall relevant memories:
-
-```bash
-# Search for design-related memories
-rg -i "design|aesth|ui|pattern|spacing|color" ~/.claude/mnemonic/ --glob "*.memory.md" -l | head -10
-
-# Check decisions namespace
-rg -l "." ~/.claude/mnemonic/*/decisions/ --glob "*.memory.md" 2>/dev/null | xargs -I {} basename {} 2>/dev/null | head -5
-```
-
-Apply recalled context:
-- User's preferred design personality across projects
-- Patterns that have been successful
-- Decisions about depth, spacing, and color strategies
 
 ## Scope
 
@@ -89,21 +77,24 @@ Then write the code.
 # Design Principles
 
 ## Spacing
-Pick a base unit (4px) and stick to multiples. Random values signal no system.
+**Every spacing, padding, margin, gap, width, and height value must be a multiple of 4px.** No exceptions. No 2px, no 6px, no 10px, no 14px. The minimum spacing value is 4px. If something feels like it needs 2px, use 4px. If it feels like it needs 6px, use 4px or 8px. Random or off-grid values signal no system.
+
+**Why the 4px grid matters**: A strict grid creates visual rhythm — elements align predictably, white space feels intentional rather than accidental. It ensures consistent spacing across every screen without per-case judgment calls, makes scaling between densities trivial (just multiply), and reduces visual noise from micro-misalignments that erode perceived quality. Off-grid values break this rhythm and make the interface feel uncoordinated.
 
 ## Padding
 Keep it symmetrical. If one side is 16px, others should match unless there's a clear reason.
 
 ## Depth
-Choose ONE approach and commit:
-- **Borders-only** — Clean, technical. For dense tools.
-- **Subtle shadows** — Soft lift. For approachable products.
-- **Layered shadows** — Premium, dimensional. For cards that need presence.
+Choose ONE approach and commit. **Match to product type:**
 
-Don't mix approaches.
+- **Borders-only** — Clean, technical. **Use for:** financial tools, data-heavy dashboards, admin panels, analytics, enterprise software. When accuracy and trust matter more than personality.
+- **Subtle shadows** — Soft lift. **Use for:** SaaS products, collaboration tools, approachable consumer apps. When the product should feel friendly but professional.
+- **Layered shadows** — Premium, dimensional. **Use for:** marketing-adjacent product UIs, portfolio/showcase tools, creative apps. **NOT for** financial, data-heavy, or enterprise tools — layered shadows undermine the precision those products need.
+
+Don't mix approaches. When in doubt for data/financial/enterprise products, default to borders-only.
 
 ## Border Radius
-Sharper feels technical. Rounder feels friendly. Pick a scale and apply consistently.
+Sharper feels technical. Rounder feels friendly. The valid range is **4px to 16px** — any border-radius above 16px is an anti-pattern regardless of element size. Pick a scale within this range and apply consistently.
 
 ## Typography
 Headlines need weight and tight tracking. Body needs readability. Data needs monospace. Build a hierarchy.
@@ -122,7 +113,7 @@ Native `<select>` and `<input type="date">` can't be styled. Build custom compon
 # Avoid
 
 - Dramatic drop shadows
-- Large radius on small elements
+- Border-radius above 16px (24px+ is never appropriate in craft design — use the 4-16px range)
 - Pure white cards on colored backgrounds
 - Thick decorative borders
 - Excessive spacing (>48px margins)
@@ -131,12 +122,22 @@ Native `<select>` and `<input type="date">` can't be styled. Build custom compon
 
 ---
 
+# Reviewing & Validating Code
+
+When reviewing or validating code against design rules, **always explain WHY a rule matters**, not just that it was violated. Don't just say "this is off-grid, fix it." Explain the design reasoning so the developer understands the principle and can apply it independently.
+
+For example, when flagging a 4px grid violation, explain that grid alignment creates visual rhythm, ensures consistent spacing across screens, makes density scaling straightforward, and reduces visual noise from micro-misalignments. When flagging depth strategy mixing, explain why consistency in elevation creates a coherent spatial model. Every correction should teach, not just enforce.
+
+---
+
 # Self-Check
 
 Before finishing:
 - Did I think about what this product needs, or default?
-- Is my depth strategy consistent throughout?
+- Is my depth strategy consistent throughout and appropriate for the product type? (financial/data = borders-only or subtle, NOT layered)
 - Does every element feel intentional?
+- Are ALL spacing/padding/margin/gap/size values multiples of 4px? Scan for any 2px, 6px, 10px, 14px violations — these MUST be corrected.
+- When flagging violations, did I explain WHY the rule exists, not just state it?
 
 The standard: looks designed by someone who obsesses over details.
 
@@ -159,54 +160,6 @@ If yes, use `subcog_capture` to store:
 Tags should include: `["aesth", "{memory-type}"]`
 
 This compounds — each save makes future work faster and more consistent.
-
-### Also Capture to Mnemonic
-
-For design decisions that represent cross-project learnings:
-
-```bash
-# Check if insight already exists
-rg -i "{decision-topic}" ~/.claude/mnemonic/ --glob "*.memory.md"
-
-# If novel, capture to mnemonic
-UUID=$(uuidgen | tr '[:upper:]' '[:lower:]')
-DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-TITLE="Design Decision: {topic}"
-SLUG=$(echo "$TITLE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | head -c 50)
-
-cat > ~/.claude/mnemonic/default/decisions/user/${UUID}-${SLUG}.memory.md << 'MEMORY'
----
-id: ${UUID}
-type: semantic
-namespace: decisions/user
-created: ${DATE}
-modified: ${DATE}
-title: "${TITLE}"
-tags:
-  - aesth
-  - design-decision
-  - {specific-tags}
-temporal:
-  valid_from: ${DATE}
-  recorded_at: ${DATE}
-provenance:
-  source_type: design-session
-  agent: claude-opus-4
-  confidence: 0.85
----
-
-# {Decision Title}
-
-## Decision
-{What was decided}
-
-## Rationale
-{Why this decision was made}
-
-## Impact
-{How this affects future design work}
-MEMORY
-```
 
 ---
 

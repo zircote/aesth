@@ -11,28 +11,42 @@ Quick reference for craft principles.
 
 ---
 
-## The 4px Grid
+## The 4px Grid — STRICT, NO EXCEPTIONS
 
-All spacing uses a 4px base grid:
-- `4px` - micro spacing (icon gaps)
-- `8px` - tight spacing (within components)
+All spacing, padding, margin, gap, width, and height values MUST be multiples of 4px. **The minimum value is 4px.** There are no exceptions, not even for small elements like badges, dots, or icons.
+
+**Why this matters**: The 4px grid creates visual rhythm — elements snap to a predictable cadence that the eye recognizes as intentional. It ensures consistent spacing across every screen without per-case judgment calls, makes scaling between density modes trivial (just multiply the base), and eliminates the visual noise caused by micro-misalignments (e.g., 13px next to 15px). Off-grid values break this rhythm and make the interface feel uncoordinated, even if the viewer can't articulate why. When reviewing code, always explain this reasoning — don't just cite the rule.
+
+**Allowed values**: 4px, 8px, 12px, 16px, 20px, 24px, 28px, 32px, 36px, 40px, 44px, 48px...
+
+**Forbidden values**: 2px, 6px, 10px, 14px, 18px, 22px, 25px, 30px — anything not divisible by 4.
+
+Scale reference:
+- `4px` - micro spacing (icon gaps, minimum possible spacing)
+- `8px` - tight spacing (within components, small badge padding)
 - `12px` - standard spacing (between related elements)
 - `16px` - comfortable spacing (section padding)
 - `24px` - generous spacing (between sections)
 - `32px` - major separation
 
-**Rule**: All spacing must be multiples of 4. Non-standard values (3px, 5px, 14px) signal no system.
+**If something feels like it needs 2px, use 4px. If it feels like it needs 6px, use 4px or 8px. Never compromise the grid.**
 
 ```css
 /* Good */
 padding: 12px 16px;
 margin-bottom: 24px;
 gap: 8px;
+/* Small badge — still on grid */
+padding: 4px 8px;
+/* Status dot — still on grid */
+width: 8px; height: 8px;
 
-/* Bad */
-padding: 14px 20px;  /* Off-grid */
-margin-bottom: 25px; /* Off-grid */
-gap: 6px;            /* Off-grid */
+/* Bad — ALL of these violate the grid */
+padding: 2px 8px;   /* 2px is below minimum */
+gap: 6px;            /* 6 is not a multiple of 4 */
+width: 6px;          /* 6 is not a multiple of 4 */
+padding: 14px 20px;  /* 14 is not a multiple of 4 */
+margin-bottom: 25px; /* 25 is not a multiple of 4 */
 ```
 
 ---
@@ -54,22 +68,33 @@ padding: 24px 16px 12px 16px; /* Asymmetric without reason */
 
 ## Border Radius Consistency
 
-Stick to the 4px grid. Sharper corners feel technical, rounder corners feel friendly. Pick a system and commit:
+The valid border-radius range is **4px to 16px**. Any radius above 16px (e.g., 24px, 32px) is always an anti-pattern in craft design, regardless of element size. Sharper corners feel technical, rounder corners feel friendly. Pick a system within this range and commit:
 
 - **Sharp (technical)**: 4px, 6px, 8px
 - **Soft (friendly)**: 8px, 12px, 16px
 - **Minimal**: 2px, 4px, 6px
 
-Don't mix systems. Consistency creates coherence.
+Don't mix systems. Consistency creates coherence. **Always flag border-radius values above 16px during code review.**
 
 ---
 
 ## Depth & Elevation Strategy
 
-Match your depth approach to your design direction. Choose ONE and commit:
+Match your depth approach to your product type. Choose ONE and commit:
+
+### Product Type → Depth Strategy Guide
+
+| Product Type | Recommended Depth | Why |
+|---|---|---|
+| Financial tools, fintech, banking | Borders-only | Precision and trust; shadows feel frivolous |
+| Data dashboards, analytics, BI | Borders-only | Dense information needs clean separation |
+| Admin panels, enterprise tools | Borders-only or Subtle | Utility-first; minimal decoration |
+| SaaS apps, collaboration tools | Subtle shadows | Approachable but professional |
+| Consumer-facing apps | Subtle or Layered | Warmth and personality appropriate |
+| Creative tools, portfolio apps | Layered shadows | Premium feel suits the context |
 
 **Borders-only (flat)**
-Clean, technical, dense. For utility-focused tools.
+Clean, technical, dense. For financial tools, data-heavy dashboards, analytics, and enterprise software.
 ```css
 --border: rgba(0, 0, 0, 0.08);
 --border-subtle: rgba(0, 0, 0, 0.05);
@@ -77,13 +102,13 @@ border: 0.5px solid var(--border);
 ```
 
 **Subtle single shadows**
-Soft lift without complexity.
+Soft lift without complexity. For SaaS products and approachable tools.
 ```css
 --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 ```
 
 **Layered shadows**
-Rich, premium, dimensional. For cards that need presence.
+Rich, premium, dimensional. For creative and consumer apps where personality matters. **Do NOT use for financial, data-heavy, or enterprise tools** — layered shadows undermine the precision and trust those products require.
 ```css
 --shadow-layered:
   0 0 0 0.5px rgba(0, 0, 0, 0.05),
@@ -229,7 +254,7 @@ The hierarchy system still applies, just with inverted values.
 Avoid these:
 
 - **Dramatic drop shadows**: `box-shadow: 0 10px 50px rgba(0,0,0,0.5)`
-- **Large radius on small elements**: 12px radius on 24px button
+- **Border-radius above 16px**: Any radius over 16px (e.g., 24px, 32px) is inappropriate in craft design regardless of element size — the valid range is 4-16px
 - **Pure white cards on colored backgrounds**: #fff on #f8f9fa
 - **Thick decorative borders**: 4px solid just for decoration
 - **Excessive spacing**: >48px margins between elements
@@ -249,7 +274,7 @@ Tight spacing, monochrome, information-forward. For power users who live in the 
 Generous spacing, soft shadows, friendly colors. For products that want to feel human. Think Notion, Coda.
 
 **Sophistication & Trust**
-Cool tones, layered depth, financial gravitas. For products handling money or sensitive data. Think Stripe, Mercury.
+Cool tones, borders-only or subtle shadows, financial gravitas. For products handling money or sensitive data. Think Stripe, Mercury. **Use borders-only or subtle shadows** — never layered shadows for financial tools.
 
 **Boldness & Clarity**
 High contrast, dramatic negative space, confident typography. For products that want to feel modern and decisive.
@@ -258,7 +283,7 @@ High contrast, dramatic negative space, confident typography. For products that 
 Muted palette, functional density, clear hierarchy. For products where the work matters more than the chrome. Think GitHub.
 
 **Data & Analysis**
-Chart-optimized, technical but accessible, numbers as first-class citizens. For analytics, metrics, business intelligence.
+Chart-optimized, technical but accessible, numbers as first-class citizens. For analytics, metrics, business intelligence. **Use borders-only depth** — shadows distract from data.
 
 ---
 
@@ -269,7 +294,7 @@ Before finishing:
 1. Did I think about what this product needs, or default?
 2. Is my depth strategy consistent throughout?
 3. Does every element feel intentional?
-4. Are all spacing values on the 4px grid?
+4. Are ALL spacing/padding/margin/gap/width/height values multiples of 4px? (Check for 2px, 6px, 10px, 14px violations)
 5. Do colors communicate meaning, not decoration?
 
 **Standard**: Looks designed by someone who obsesses over details.
