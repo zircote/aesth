@@ -1,0 +1,99 @@
+[
+  {
+    "name": "happy-path-dashboard-design",
+    "description": "User asks to build a data dashboard component. Skill should state design choices first, use 4px grid, choose a depth strategy, and produce clean CSS/HTML.",
+    "prompt": "Build me a stats dashboard card component that shows KPIs like revenue, active users, and conversion rate. Use React with inline styles or CSS modules.",
+    "expectations": [
+      "Response states design choices (direction, depth strategy, spacing) BEFORE writing any code",
+      "All spacing values in the generated code are multiples of 4 (e.g., 4, 8, 12, 16, 20, 24, 32, 48) — no odd values like 5, 7, 10, 14, 15, 25",
+      "Code uses exactly ONE depth strategy throughout — either borders-only OR subtle shadows OR layered shadows, never mixing approaches",
+      "Typography for numeric/data values uses monospace or tabular-nums (font-variant-numeric: tabular-nums or font-family referencing a monospace font)",
+      "Response offers to save patterns to Subcog after completing the component",
+      "Border radius values are consistent across all elements — not randomly mixed sizes"
+    ]
+  },
+  {
+    "name": "scope-detection-marketing-redirect",
+    "description": "User asks to build a landing page. Skill should redirect to /frontend-design.",
+    "prompt": "I need a beautiful landing page for my new SaaS product — hero section, feature grid, testimonials, and a CTA. Can you design it?",
+    "expectations": [
+      "Response redirects the user to /frontend-design (mentions the command or skill by name)",
+      "Response does NOT produce a full landing page implementation with hero/CTA sections",
+      "Response explains that aesth is for dashboards/apps/tools, not marketing sites",
+      "Response does NOT announce 'I am checking scope' or narrate the redirection decision process"
+    ]
+  },
+  {
+    "name": "spacing-validation-off-grid",
+    "description": "User provides code with off-grid spacing. Skill should identify violations and fix them to 4px multiples.",
+    "prompt": "Can you review this component for design consistency?\n\n```css\n.card {\n  padding: 15px 22px;\n  margin-bottom: 14px;\n  border-radius: 7px;\n}\n.card-header {\n  padding: 9px 15px;\n  margin-top: 5px;\n  font-size: 13px;\n}\n.card-body {\n  padding: 25px;\n  gap: 11px;\n}\n```",
+    "expectations": [
+      "Response identifies that 15px, 22px, 14px, 7px, 9px, 5px, 25px, and 11px are not on a 4px grid",
+      "Corrected values are all multiples of 4 (e.g., 16px instead of 15px, 24px instead of 22px or 25px, 12px instead of 11px)",
+      "Response explains WHY grid alignment matters (system consistency, intentional spacing)",
+      "Corrected padding values maintain symmetry unless there is explicit justification for asymmetry",
+      "Response does NOT just say 'spacing looks off' — it gives specific corrected values for each property"
+    ]
+  },
+  {
+    "name": "anti-pattern-detection",
+    "description": "User provides code with multiple anti-patterns. Skill should flag all of them specifically.",
+    "prompt": "Here's my card component. How does it look?\n\n```css\n.card {\n  background: linear-gradient(135deg, #667eea, #764ba2);\n  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);\n  border-radius: 24px;\n  border: 3px solid #ff6b6b;\n  padding: 64px;\n}\n.card-title {\n  color: #ff6b6b;\n}\n.card-action {\n  background: #00d2ff;\n}\n.card-badge {\n  background: #f7971e;\n}\n```",
+    "expectations": [
+      "Response flags the dramatic/heavy drop shadow (0 20px 60px with 0.5 opacity) as an anti-pattern",
+      "Response flags the decorative gradient (linear-gradient) as an anti-pattern",
+      "Response flags the multiple accent colors (ff6b6b, 00d2ff, f7971e) as an anti-pattern — color should communicate meaning, not decorate",
+      "Response flags the thick decorative border (3px solid) as an anti-pattern",
+      "Response flags the excessive padding (64px) as an anti-pattern (>48px margins/padding)",
+      "Response flags the large border-radius (24px) as potentially inappropriate for a card element"
+    ]
+  },
+  {
+    "name": "design-direction-suggestion-fintech",
+    "description": "User describes a fintech product. Skill should suggest an appropriate direction and ask for confirmation.",
+    "prompt": "I'm building a portfolio management dashboard for a fintech startup. Users track investments, view account balances, and analyze market trends. What direction should we take?",
+    "expectations": [
+      "Response suggests a direction that emphasizes trust, precision, or sophistication — NOT warmth/playfulness",
+      "Response recommends tight/dense spacing appropriate for data-heavy financial interfaces",
+      "Response recommends monospace or tabular-nums for financial figures",
+      "Response explicitly asks for user confirmation before proceeding (suggest+ask pattern)",
+      "Response recommends a borders-only or subtle-shadows depth strategy — NOT layered/dramatic shadows for a financial tool",
+      "Response does NOT announce 'I am in ESTABLISH MODE' or narrate internal process"
+    ]
+  },
+  {
+    "name": "communication-style-invisible",
+    "description": "Skill should work invisibly without narrating its process or announcing modes.",
+    "prompt": "Build me a settings page layout with a sidebar navigation and a content area. Use Tailwind CSS.",
+    "expectations": [
+      "Response does NOT contain phrases like 'I'm in ESTABLISH MODE' or 'Let me check Subcog' or 'Entering design mode'",
+      "Response does NOT narrate steps like 'First I will query memory' or 'Now I am applying design principles'",
+      "Response states design choices (direction, depth, spacing) directly without meta-commentary about the process",
+      "Response produces actual code for the settings page layout, not just a plan or description"
+    ]
+  },
+  {
+    "name": "typography-hierarchy-data-table",
+    "description": "User asks for a data table component. Skill should use proper typography hierarchy with monospace for data.",
+    "prompt": "Build me a data table component for displaying server metrics — hostname, CPU usage, memory, disk, and status. React component please.",
+    "expectations": [
+      "Numeric data columns (CPU %, memory, disk) use monospace font or font-variant-numeric: tabular-nums so digits align vertically",
+      "Column headers have visually distinct weight or size from table body text (typography hierarchy)",
+      "Status column uses color to communicate meaning (e.g., green for healthy, red for critical) rather than decorative color",
+      "All spacing/padding values in the table are multiples of 4px",
+      "Response states design choices (direction, depth, spacing) before the code"
+    ]
+  },
+  {
+    "name": "memory-persistence-offer",
+    "description": "After building a component, skill should offer to save patterns to Subcog.",
+    "prompt": "Build me a notification toast component with success, warning, and error variants. Keep it minimal.",
+    "prompt_suffix": "After the skill produces the component, check the tail of the response.",
+    "expectations": [
+      "Response includes an offer to save patterns to Subcog (mentions 'Subcog', 'save', or 'capture' in context of persisting the design)",
+      "The save offer comes AFTER the component code, not before",
+      "The offer specifically mentions saving patterns, direction, or design tokens — not just generic 'save your work'",
+      "Color is used meaningfully in the variants (success=green-ish, error=red-ish, warning=amber/yellow-ish) rather than arbitrary decorative colors"
+    ]
+  }
+]
